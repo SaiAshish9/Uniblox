@@ -3,12 +3,19 @@ import styled, { css } from "styled-components";
 export const Container = styled.div`
   width: 100%;
   height: 56px;
-  background: linear-gradient(90deg, #f9f9ff, #dee8ff);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #535766;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  ${({ isHome }) =>
+    isHome === 1
+      ? css`
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+          background: linear-gradient(90deg, #f9f9ff, #dee8ff);
+        `
+      : css`
+          border-bottom: 1px solid #e9e9ed;
+        `}
 `;
 
 export const Content = styled.div`
@@ -42,6 +49,16 @@ export const TimeIntervalText = styled.p`
       color: #535766;
       margin: 0 6px;
     `}
+  ${({ isHome }) =>
+    isHome === 0 &&
+    css`
+      color: #f16565;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 2px 4px;
+      border-radius: 8px;
+      background-color: #fdf2dc;
+    `}
 `;
 
 export const PreText = styled.p`
@@ -49,6 +66,11 @@ export const PreText = styled.p`
   font-size: 16px;
   position: relative;
   top: 1px;
+  ${({ isHome }) =>
+    isHome === 0 &&
+    css`
+      font-weight: 600;
+    `}
 `;
 
 export const TimelineSymbol = styled.p`

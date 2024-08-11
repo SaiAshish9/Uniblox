@@ -6,9 +6,16 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
   margin-bottom: 2px;
   padding: 0 3rem;
+  ${({ isHome }) =>
+    isHome === 1
+      ? css`
+          box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+        `
+      : css`
+          border-bottom: 1px solid #e9e9ed;
+        `}
 `;
 
 export const BadgeContainer = styled.div`
@@ -68,4 +75,25 @@ export const LabelLeftContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+`;
+
+export const SecureImgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const SecureImg = styled.img`
+  width: 26px;
+  height: 26px;
+  margin-right: 5px;
+`;
+
+export const SecureText = styled.p`
+  float: right;
+  letter-spacing: 3px;
+  color: #535766;
+  margin: 0 20px 0 0;
+  font-size: 12px;
+  font-weight: 500;
 `;

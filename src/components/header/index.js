@@ -7,11 +7,14 @@ import {
   LabelsContainer,
   Label,
   LabelLeftContainer,
+  SecureImgContainer,
+  SecureImg,
+  SecureText,
 } from "./styles";
 import { BsHandbag } from "react-icons/bs";
 
 import Logo from "assets/logo.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LABEL_DATA = [
   {
@@ -42,6 +45,9 @@ const LABEL_DATA = [
 
 const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const isHome = pathname === "/";
 
   function handleClick(e) {
     e.preventDefault();
@@ -49,21 +55,33 @@ const Header = () => {
   }
 
   return (
-    <Container>
+    <Container isHome={+isHome}>
       <LabelLeftContainer>
         <LogoImg alt="img" src={Logo} />
-        <LabelsContainer>
-          {LABEL_DATA.map((data, _) => (
-            <Label bgcolor={data.borderColor} key={data.text}>
-              {data.text}
-            </Label>
-          ))}
-        </LabelsContainer>
+        {isHome && (
+          <LabelsContainer>
+            {LABEL_DATA.map((data, _) => (
+              <Label bgcolor={data.borderColor} key={data.text}>
+                {data.text}
+              </Label>
+            ))}
+          </LabelsContainer>
+        )}
       </LabelLeftContainer>
-      <BadgeContainer onClick={handleClick}>
-        <BsHandbag size={22} color="#282c3f" />
-        <Badge>1 </Badge>
-      </BadgeContainer>
+      {isHome ? (
+        <BadgeContainer onClick={handleClick}>
+          <BsHandbag size={22} color="#282c3f" />
+          <Badge>1 </Badge>
+        </BadgeContainer>
+      ) : (
+        <SecureImgContainer>
+          <SecureImg
+            alt="img"
+            src="https://constant.myntassets.com/checkout/assets/img/sprite-secure.png"
+          />
+          <SecureText>100% SECURE</SecureText>
+        </SecureImgContainer>
+      )}
     </Container>
   );
 };
