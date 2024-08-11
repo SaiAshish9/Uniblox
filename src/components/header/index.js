@@ -57,7 +57,7 @@ const Header = () => {
   return (
     <Container isHome={+isHome}>
       <LabelLeftContainer>
-        <LogoImg alt="img" src={Logo} />
+        <LogoImg onClick={() => navigate("/")} alt="img" src={Logo} />
         {isHome && (
           <LabelsContainer>
             {LABEL_DATA.map((data, _) => (
