@@ -42,6 +42,18 @@ document
   .querySelectorAll(".product-discountPercentage")
   .forEach((x) => discountedPer.push(x.innerText));
 
+const count = [];
+document
+  .querySelectorAll(".product-ratingsCount")
+  .forEach((x) =>
+    count.push(x.innerText.trim().replace("|", "").replace("\n", ""))
+  );
+
+const rating = [];
+document
+  .querySelectorAll("div.product-ratingsContainer > span:nth-child(1)")
+  .forEach((x) => rating.push(x.innerText));
+
 for (let i = 0; i < img.length; i++) {
   res.push({
     img: img[i],
@@ -51,5 +63,7 @@ for (let i = 0; i < img.length; i++) {
     price: discountedPrice[i],
     per: discountedPer[i],
     strikePrice: strikePrice[i],
+    count: count[i],
+    rating: rating[i],
   });
 }

@@ -13,10 +13,13 @@ import {
   ItemPriceText,
   ItemProduct,
   ItemProductPriceTag,
+  Label,
+  Spacer,
   TitleContainer,
 } from "./styles";
 import { PiHandbagSimpleLight, PiHandbagSimpleFill } from "react-icons/pi";
 import DATA from "data/data.json";
+import { IoStar } from "react-icons/io5";
 
 const HomeContent = () => {
   const [hovered, setHovered] = useState(-1);
@@ -59,6 +62,17 @@ const HomeContent = () => {
             }}
           >
             <ItemImg hovered={+(hovered === key)} src={item.img} alt="img" />
+            {hovered !== key && (
+              <Label>
+                <span>{item.rating}</span>
+                <Spacer />
+                <IoStar color="#009692" />
+                <Spacer />
+                <div>|</div>
+                <Spacer />
+                <span>{item.count}</span>
+              </Label>
+            )}
             <ItemDesc hovered={+(hovered === key)}>
               {renderHoveredContent(hovered === key, item)}
               <ItemPriceContainer>

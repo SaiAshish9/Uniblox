@@ -150,3 +150,34 @@ export const AddToCartContainer = styled.div`
   margin: 0.5rem 0;
   width: 190px;
 `;
+
+export const Label = styled.div`
+  z-index: 2;
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 250px;
+  font-size: 12px;
+  font-weight: 700;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0 4px;
+  background-color: hsla(0, 0%, 100%, 0.8);
+  div {
+    font-size: 8px;
+    position: relative;
+    bottom: 0.5px;
+  }
+`;
+
+export const Spacer = styled.div`
+  width: 4px;
+  height: 2px;
+`;
