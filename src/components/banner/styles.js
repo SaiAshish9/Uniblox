@@ -37,7 +37,7 @@ export const TimeIntervalText = styled.p`
   top: 1.5px;
 
   ${({ b }) =>
-    b &&
+    b === 1 &&
     css`
       color: #535766;
       margin: 0 6px;

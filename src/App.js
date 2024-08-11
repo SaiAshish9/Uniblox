@@ -1,12 +1,17 @@
-import { Header } from "components";
 import React from "react";
+import { Banner } from "components";
+import { Header } from "components";
+import { Route, Routes } from "react-router-dom";
 import { Home } from "screens";
 
 const App = () => {
   return (
     <>
       <Header />
-      <Home />
+      <Banner />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </>
   );
 };

@@ -60,7 +60,7 @@ export const Label = styled.p`
   justify-content: center;
   border-bottom: 3px solid #fff;
   &:hover {
-    border-bottom: 3px solid ${({ bgColor }) => bgColor};
+    border-bottom: 3px solid ${({ bgcolor }) => bgcolor};
   }
 `;
 

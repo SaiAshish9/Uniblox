@@ -50,7 +50,7 @@ const HomeContent = () => {
       <ItemContainer>
         {DATA.map((item, key) => (
           <Item
-            key={item.title}
+            key={item.desc + key}
             onMouseEnter={() => {
               setHovered(key);
             }}

@@ -44,10 +44,10 @@ const Banner = () => {
         <InnerContent>
           <TimeIntervalText>{formatTime(timeRemaining)[0]}</TimeIntervalText>
           <TimelineSymbol> H</TimelineSymbol>
-          <TimeIntervalText b>:</TimeIntervalText>
+          <TimeIntervalText b={1}>:</TimeIntervalText>
           <TimeIntervalText>{formatTime(timeRemaining)[1]}</TimeIntervalText>
           <TimelineSymbol> M</TimelineSymbol>
-          <TimeIntervalText b>:</TimeIntervalText>
+          <TimeIntervalText b={1}>:</TimeIntervalText>
           <TimeIntervalText>{formatTime(timeRemaining)[2]}</TimeIntervalText>
           <TimelineSymbol> S</TimelineSymbol>
         </InnerContent>

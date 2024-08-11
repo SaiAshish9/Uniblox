@@ -46,7 +46,7 @@ const Header = () => {
         <LogoImg alt="img" src={Logo} />
         <LabelsContainer>
           {LABEL_DATA.map((data, _) => (
-            <Label bgColor={data.borderColor} key={data.text}>
+            <Label bgcolor={data.borderColor} key={data.text}>
               {data.text}
             </Label>
           ))}
