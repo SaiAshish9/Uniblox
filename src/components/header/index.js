@@ -71,7 +71,7 @@ const Header = () => {
       {isHome ? (
         <BadgeContainer onClick={handleClick}>
           <BsHandbag size={22} color="#282c3f" />
-          <Badge>1 </Badge>
+          <Badge>2 </Badge>
         </BadgeContainer>
       ) : (
         <SecureImgContainer>
