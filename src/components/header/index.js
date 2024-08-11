@@ -11,6 +11,7 @@ import {
 import { BsHandbag } from "react-icons/bs";
 
 import Logo from "assets/logo.svg";
+import { useNavigate } from "react-router-dom";
 
 const LABEL_DATA = [
   {
@@ -40,6 +41,13 @@ const LABEL_DATA = [
 ];
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  function handleClick(e) {
+    e.preventDefault();
+    navigate("/checkout/cart");
+  }
+
   return (
     <Container>
       <LabelLeftContainer>
@@ -52,7 +60,7 @@ const Header = () => {
           ))}
         </LabelsContainer>
       </LabelLeftContainer>
-      <BadgeContainer>
+      <BadgeContainer onClick={handleClick}>
         <BsHandbag size={22} color="#282c3f" />
         <Badge>1 </Badge>
       </BadgeContainer>
