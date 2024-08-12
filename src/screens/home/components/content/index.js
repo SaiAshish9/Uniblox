@@ -39,9 +39,9 @@ const HomeContent = () => {
   async function handleCardItemUpdate(item) {
     let cartUpdated = [];
     if (!cart) {
-      cartUpdated = [item];
+      cartUpdated = [{ ...item, qty: 1 }];
     } else if (cart && !cart.map((x) => x.id).includes(item.id)) {
-      cartUpdated = [...cart, item];
+      cartUpdated = [...cart, { ...item, qty: 1 }];
     } else {
       navigate("/checkout/cart");
       return;

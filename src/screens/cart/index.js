@@ -15,6 +15,9 @@ const Cart = () => {
   const [qtyModalVisible, setQtyModalVisible] = useState(false);
   const [couponModalVisible, setCouponModalVisible] = useState(false);
   const [coupon, setCoupon] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedQty, setSelectedQty] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
   const {
     state: { cart },
@@ -29,7 +32,10 @@ const Cart = () => {
               setQtyModalVisible={setQtyModalVisible}
               setSizeModalVisible={setSizeModalVisible}
               setCouponModalVisible={setCouponModalVisible}
+              setSelectedSize={setSelectedSize}
+              setSelectedQty={setSelectedQty}
               item={item}
+              setSelectedId={setSelectedId}
               key={item.id}
             />
           ))
@@ -47,10 +53,16 @@ const Cart = () => {
       <QtyModal
         qtyModalVisible={qtyModalVisible}
         setQtyModalVisible={setQtyModalVisible}
+        selectedId={selectedId}
+        selectedQty={selectedQty}
+        setSelectedQty={setSelectedQty}
       />
       <SizeModal
         sizeModalVisible={sizeModalVisible}
+        selectedSize={selectedSize}
+        setSelectedSize={setSelectedSize}
         setSizeModalVisible={setSizeModalVisible}
+        selectedId={selectedId}
       />
       <CouponModal
         couponModalVisible={couponModalVisible}

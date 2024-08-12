@@ -19,7 +19,14 @@ import { MdArrowDropDown } from "react-icons/md";
 import { useStore } from "store";
 import { updateCartAtDB } from "utils/dbUtils";
 
-const CardContainer = ({ setQtyModalVisible, setSizeModalVisible, item }) => {
+const CardContainer = ({
+  setQtyModalVisible,
+  setSizeModalVisible,
+  item,
+  setSelectedSize,
+  setSelectedId,
+  setSelectedQty,
+}) => {
   const {
     state: { cart },
     actions: { updateCart },
@@ -45,11 +52,23 @@ const CardContainer = ({ setQtyModalVisible, setSizeModalVisible, item }) => {
           <ItemProductPriceTag>{item.per}</ItemProductPriceTag>
         </ItemPriceContainer>
         <DropdownContainer>
-          <Dropdown onClick={() => setSizeModalVisible(true)}>
+          <Dropdown
+            onClick={() => {
+              setSelectedId(item.id);
+              setSelectedSize(+item.size);
+              setSizeModalVisible(true);
+            }}
+          >
             Size: {item.size} <MdArrowDropDown />
           </Dropdown>
-          <Dropdown onClick={() => setQtyModalVisible(true)}>
-            Qty: 1 <MdArrowDropDown />
+          <Dropdown
+            onClick={() => {
+              setSelectedId(item.id);
+              setQtyModalVisible(true);
+              setSelectedQty(item.qty);
+            }}
+          >
+            Qty: {item.qty ?? 1} <MdArrowDropDown />
           </Dropdown>
           <Duration>Low Stock</Duration>
         </DropdownContainer>

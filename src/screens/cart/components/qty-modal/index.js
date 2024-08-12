@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal } from "antd";
 import { ModalBtn } from "screens/cart/styles";
 import { Options, Option } from "screens/cart/styles";
@@ -6,8 +6,38 @@ import { ModalHeader } from "screens/cart/styles";
 import { ModalContent } from "screens/cart/styles";
 import { CloseIcon } from "../card/styles";
 import CloseImg from "assets/close.svg";
+import { useStore } from "store";
+import { updateCartAtDB } from "utils/dbUtils";
 
-const QtyModal = ({ qtyModalVisible, setQtyModalVisible }) => {
+const QtyModal = ({
+  qtyModalVisible,
+  setQtyModalVisible,
+  selectedQty,
+  setSelectedQty,
+  selectedId,
+}) => {
+  const {
+    state: { cart },
+    actions: { updateCart },
+  } = useStore();
+
+  useEffect(() => {
+    return () => {
+      setSelectedQty(null);
+    };
+  }, []);
+
+  async function handleSubmit() {
+    const items = cart.slice();
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].id === selectedId) {
+        items[i].qty = selectedQty;
+      }
+    }
+    await updateCart(items);
+    await updateCartAtDB(items);
+    setQtyModalVisible(false);
+  }
   return (
     <Modal
       centered
@@ -26,12 +56,16 @@ const QtyModal = ({ qtyModalVisible, setQtyModalVisible }) => {
           {[...Array(10).keys()]
             .map((x) => x + 1)
             .map((item, _) => (
-              <Option selected={+(item === 1)} key={item}>
+              <Option
+                onClick={() => setSelectedQty(item)}
+                selected={+(item === selectedQty)}
+                key={item}
+              >
                 {item}
               </Option>
             ))}
         </Options>
-        <ModalBtn>DONE</ModalBtn>
+        <ModalBtn onClick={handleSubmit}>DONE</ModalBtn>
         <CloseIcon
           onClick={() => setQtyModalVisible(false)}
           alt="img"
