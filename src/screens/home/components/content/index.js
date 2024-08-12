@@ -48,7 +48,7 @@ const HomeContent = () => {
   return (
     <Container>
       <TitleContainer>
-        Mast Harbour Shirts <span>- 2161 items</span>
+        Mast Harbour Shirts <span>- 50 items</span>
       </TitleContainer>
       <ItemContainer>
         {DATA.map((item, key) => (
