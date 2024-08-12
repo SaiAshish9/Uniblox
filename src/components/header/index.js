@@ -20,6 +20,7 @@ import { BsHandbag } from "react-icons/bs";
 import Logo from "assets/logo.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineHistory } from "react-icons/ai";
+import { useStore } from "store";
 
 const LABEL_DATA = [
   {
@@ -70,11 +71,38 @@ const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const {
+    state: { user },
+  } = useStore();
+
   const ishome = pathname === "/";
 
   function handleClick(e) {
     e.preventDefault();
     navigate("/checkout/cart");
+  }
+
+  function renderHomeNavIcons(currentUser) {
+    if (!currentUser) {
+      return <></>;
+    }
+    return (
+      <ItemList>
+        {NAV_ITEM.map((item, _) => (
+          <Item key={item.text}>
+            {item.icon}
+            <ItemText>{item.text}</ItemText>
+          </Item>
+        ))}
+        <Item>
+          <BadgeContainer onClick={handleClick}>
+            <BsHandbag size={22} color="#282c3f" />
+            <Badge>2 </Badge>
+          </BadgeContainer>
+          <ItemText>Bag</ItemText>
+        </Item>
+      </ItemList>
+    );
   }
 
   return (
@@ -92,21 +120,7 @@ const Header = () => {
         )}
       </LabelLeftContainer>
       {ishome ? (
-        <ItemList>
-          {NAV_ITEM.map((item, _) => (
-            <Item key={item.text}>
-              {item.icon}
-              <ItemText>{item.text}</ItemText>
-            </Item>
-          ))}
-          <Item>
-            <BadgeContainer onClick={handleClick}>
-              <BsHandbag size={22} color="#282c3f" />
-              <Badge>2 </Badge>
-            </BadgeContainer>
-            <ItemText>Bag</ItemText>
-          </Item>
-        </ItemList>
+        renderHomeNavIcons(user)
       ) : (
         <SecureImgContainer>
           <SecureImg
