@@ -13,41 +13,47 @@ import {
   TotalPriceContainer,
 } from "./styles";
 
-const DATA = [
-  {
-    text1: <span>Total MRP</span>,
-    text2: <span>₹4,098</span>,
-  },
-  {
-    text1: <span>Discount on MRP</span>,
-    text2: <GreenSpanCont>- ₹3,000</GreenSpanCont>,
-  },
-  {
-    text1: <span>Coupon Discount</span>,
-    text2: <CouponText>Apply Coupon</CouponText>,
-  },
-  {
-    text1: <span>Platform Fee</span>,
-    text2: <GreenSpanCont>FREE</GreenSpanCont>,
-  },
-  {
-    text1: (
-      <div>
-        <span>Shipping Fee</span>
-        <br />
-        <PriceSpan1>Free shipping for you</PriceSpan1>
-      </div>
-    ),
-    text2: <GreenSpanCont top>FREE</GreenSpanCont>,
-  },
-];
+const getData = (setCouponModalVisible) => {
+  return [
+    {
+      text1: <span>Total MRP</span>,
+      text2: <span>₹4,098</span>,
+    },
+    {
+      text1: <span>Discount on MRP</span>,
+      text2: <GreenSpanCont>- ₹3,000</GreenSpanCont>,
+    },
+    {
+      text1: <span>Coupon Discount</span>,
+      text2: (
+        <CouponText onClick={() => setCouponModalVisible(true)}>
+          Apply Coupon
+        </CouponText>
+      ),
+    },
+    {
+      text1: <span>Platform Fee</span>,
+      text2: <GreenSpanCont>FREE</GreenSpanCont>,
+    },
+    {
+      text1: (
+        <div>
+          <span>Shipping Fee</span>
+          <br />
+          <PriceSpan1>Free shipping for you</PriceSpan1>
+        </div>
+      ),
+      text2: <GreenSpanCont top>FREE</GreenSpanCont>,
+    },
+  ];
+};
 
-const PriceContainer = () => {
+const PriceContainer = ({ setCouponModalVisible }) => {
   return (
     <PriceDesc>
       <PriceText1>PRICE DETAILS (2 Items)</PriceText1>
       <OrderSummary>
-        {DATA.map((item, key) => (
+        {getData(setCouponModalVisible).map((item, key) => (
           <OrderSummaryItem key={key}>
             {item.text1}
             {item.text2}

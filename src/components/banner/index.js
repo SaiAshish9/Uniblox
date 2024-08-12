@@ -13,7 +13,7 @@ const Banner = () => {
   const [timeRemaining, setTimeRemaining] = useState(24 * 60 * 60 * 1000); // 1 day in milliseconds
   const { pathname } = useLocation();
 
-  const isHome = pathname === "/";
+  const ishome = pathname === "/";
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -42,24 +42,24 @@ const Banner = () => {
   };
 
   return (
-    <Container isHome={+isHome}>
+    <Container ishome={+ishome}>
       <Content>
-        <PreText isHome={+isHome}>Sale Ends In</PreText>
+        <PreText ishome={+ishome}>Sale Ends In</PreText>
         <InnerContent>
-          <TimeIntervalText isHome={+isHome}>
+          <TimeIntervalText ishome={+ishome}>
             {formatTime(timeRemaining)[0]}
           </TimeIntervalText>
-          <TimelineSymbol> {isHome ? "H" : "Hrs"}</TimelineSymbol>
+          <TimelineSymbol> {ishome ? "H" : "Hrs"}</TimelineSymbol>
           <TimeIntervalText b={1}>:</TimeIntervalText>
-          <TimeIntervalText isHome={+isHome}>
+          <TimeIntervalText ishome={+ishome}>
             {formatTime(timeRemaining)[1]}
           </TimeIntervalText>
-          <TimelineSymbol>{isHome ? "M" : "Min"} </TimelineSymbol>
+          <TimelineSymbol>{ishome ? "M" : "Min"} </TimelineSymbol>
           <TimeIntervalText b={1}>:</TimeIntervalText>
-          <TimeIntervalText isHome={+isHome}>
+          <TimeIntervalText ishome={+ishome}>
             {formatTime(timeRemaining)[2]}
           </TimeIntervalText>
-          <TimelineSymbol> {isHome ? "S" : "Sec"}</TimelineSymbol>
+          <TimelineSymbol> {ishome ? "S" : "Sec"}</TimelineSymbol>
         </InnerContent>
       </Content>
     </Container>

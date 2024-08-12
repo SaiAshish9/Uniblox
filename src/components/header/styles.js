@@ -8,8 +8,8 @@ export const Container = styled.div`
   justify-content: space-between;
   margin-bottom: 2px;
   padding: 0 3rem;
-  ${({ isHome }) =>
-    isHome === 1
+  ${({ ishome }) =>
+    ishome === 1
       ? css`
           box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
         `

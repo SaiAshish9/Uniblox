@@ -7,8 +7,8 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   color: #535766;
-  ${({ isHome }) =>
-    isHome === 1
+  ${({ ishome }) =>
+    ishome === 1
       ? css`
           box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
           background: linear-gradient(90deg, #f9f9ff, #dee8ff);
@@ -49,8 +49,8 @@ export const TimeIntervalText = styled.p`
       color: #535766;
       margin: 0 6px;
     `}
-  ${({ isHome }) =>
-    isHome === 0 &&
+  ${({ ishome }) =>
+    ishome === 0 &&
     css`
       color: #f16565;
       font-weight: 700;
@@ -66,8 +66,8 @@ export const PreText = styled.p`
   font-size: 16px;
   position: relative;
   top: 1px;
-  ${({ isHome }) =>
-    isHome === 0 &&
+  ${({ ishome }) =>
+    ishome === 0 &&
     css`
       font-weight: 600;
     `}

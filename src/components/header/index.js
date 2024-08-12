@@ -47,7 +47,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const isHome = pathname === "/";
+  const ishome = pathname === "/";
 
   function handleClick(e) {
     e.preventDefault();
@@ -55,10 +55,10 @@ const Header = () => {
   }
 
   return (
-    <Container isHome={+isHome}>
+    <Container ishome={+ishome}>
       <LabelLeftContainer>
         <LogoImg onClick={() => navigate("/")} alt="img" src={Logo} />
-        {isHome && (
+        {ishome && (
           <LabelsContainer>
             {LABEL_DATA.map((data, _) => (
               <Label bgcolor={data.borderColor} key={data.text}>
@@ -68,7 +68,7 @@ const Header = () => {
           </LabelsContainer>
         )}
       </LabelLeftContainer>
-      {isHome ? (
+      {ishome ? (
         <BadgeContainer onClick={handleClick}>
           <BsHandbag size={22} color="#282c3f" />
           <Badge>2 </Badge>
