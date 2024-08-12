@@ -12,6 +12,7 @@ const Cart = () => {
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [qtyModalVisible, setQtyModalVisible] = useState(false);
   const [couponModalVisible, setCouponModalVisible] = useState(false);
+  const [coupon, setCoupon] = useState(null);
 
   return (
     <Container>
@@ -25,7 +26,10 @@ const Cart = () => {
           />
         ))}
       </CardList>
-      <PriceContainer />
+      <PriceContainer
+        coupon={coupon}
+        setCouponModalVisible={setCouponModalVisible}
+      />
       <QtyModal
         qtyModalVisible={qtyModalVisible}
         setQtyModalVisible={setQtyModalVisible}
@@ -37,6 +41,7 @@ const Cart = () => {
       <CouponModal
         couponModalVisible={couponModalVisible}
         setCouponModalVisible={setCouponModalVisible}
+        setCoupon={setCoupon}
       />
     </Container>
   );

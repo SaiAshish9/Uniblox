@@ -69,7 +69,7 @@ export const PriceBtn = styled.div`
 export const GreenSpanCont = styled.span`
   color: #03a685;
   ${({ top }) =>
-    top &&
+    top === 1 &&
     css`
       align-self: flex-start;
     `}
