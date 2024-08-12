@@ -18,6 +18,41 @@ export const Container = styled.div`
         `}
 `;
 
+export const ItemList = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: fit-content;
+  height: 52%;
+`;
+
+export const ProfileImg = styled.img`
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow-x: hidden !important;
+`;
+
+export const Item = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  margin-left: 2.1rem;
+  height: 100%;
+  cursor: pointer;
+`;
+
+export const ItemText = styled.p`
+  color: #000;
+  left: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+`;
+
 export const BadgeContainer = styled.div`
   position: relative;
   cursor: pointer;
