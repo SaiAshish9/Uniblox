@@ -72,7 +72,7 @@ const Header = () => {
   const { pathname } = useLocation();
 
   const {
-    state: { user },
+    state: { user, cart },
   } = useStore();
 
   const ishome = pathname === "/";
@@ -82,7 +82,7 @@ const Header = () => {
     navigate("/checkout/cart");
   }
 
-  function renderHomeNavIcons(currentUser) {
+  function renderHomeNavIcons(currentUser, currentCart) {
     if (!currentUser) {
       return <></>;
     }
@@ -94,10 +94,10 @@ const Header = () => {
             <ItemText>{item.text}</ItemText>
           </Item>
         ))}
-        <Item>
-          <BadgeContainer onClick={handleClick}>
+        <Item onClick={handleClick}>
+          <BadgeContainer>
             <BsHandbag size={22} color="#282c3f" />
-            <Badge>2 </Badge>
+            <Badge>{cart?.length ?? 0} </Badge>
           </BadgeContainer>
           <ItemText>Bag</ItemText>
         </Item>
@@ -120,7 +120,7 @@ const Header = () => {
         )}
       </LabelLeftContainer>
       {ishome ? (
-        renderHomeNavIcons(user)
+        renderHomeNavIcons(user, cart)
       ) : (
         <SecureImgContainer>
           <SecureImg

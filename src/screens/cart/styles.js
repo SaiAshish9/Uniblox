@@ -84,3 +84,18 @@ export const Option = styled.div`
     border: 1px solid #ff3f6c;
   }
 `;
+
+export const EmptyContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  flex-direction: column;
+  min-height: 540px;
+  p {
+    color: #282c3f;
+    font-weight: 500;
+    font-size: 14px;
+  }
+`;

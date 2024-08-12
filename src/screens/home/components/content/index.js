@@ -20,13 +20,35 @@ import {
 import { PiHandbagSimpleLight, PiHandbagSimpleFill } from "react-icons/pi";
 import { IoStar } from "react-icons/io5";
 import { useStore } from "store";
+import { useNavigate } from "react-router-dom";
+import { updateCartAtDB } from "utils/dbUtils";
 
 const HomeContent = () => {
   const [hovered, setHovered] = useState(-1);
+  const navigate = useNavigate();
 
   const {
-    state: { items },
+    state: { items, cart },
+    actions: { updateCart },
   } = useStore();
+
+  const isNotPresentAtCart = (presentCart, item) =>
+    !presentCart ||
+    (presentCart && !presentCart.map((x) => x.id).includes(item.id));
+
+  async function handleCardItemUpdate(item) {
+    let cartUpdated = [];
+    if (!cart) {
+      cartUpdated = [item];
+    } else if (cart && !cart.map((x) => x.id).includes(item.id)) {
+      cartUpdated = [...cart, item];
+    } else {
+      navigate("/checkout/cart");
+      return;
+    }
+    await updateCart(cartUpdated);
+    await updateCartAtDB(cartUpdated);
+  }
 
   function renderHoveredContent(active, item) {
     if (!active) {
@@ -40,9 +62,16 @@ const HomeContent = () => {
 
     return (
       <AddToCartContainer>
-        <ADDTOCARTBTN>
-          <PiHandbagSimpleLight size={16} />
-          <span>ADD TO CART</span>
+        <ADDTOCARTBTN onClick={async () => await handleCardItemUpdate(item)}>
+          {isNotPresentAtCart(cart, item) ? (
+            <PiHandbagSimpleLight size={16} />
+          ) : (
+            <PiHandbagSimpleFill size={16} />
+          )}
+
+          <span>
+            {isNotPresentAtCart(cart, item) ? "ADD TO CART" : "GO TO CART"}{" "}
+          </span>
         </ADDTOCARTBTN>
         <ItemProduct>Sizes: {item.size}</ItemProduct>
       </AddToCartContainer>

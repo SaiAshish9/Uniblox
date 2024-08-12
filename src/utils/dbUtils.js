@@ -14,6 +14,9 @@ export const openDatabase = () => {
         itemsStore.createIndex("name", "name", { unique: false });
         itemsStore.createIndex("price", "price", { unique: false });
       }
+      if (!db.objectStoreNames.contains("cart")) {
+        db.createObjectStore("cart", { keyPath: "id" });
+      }
     };
 
     request.onsuccess = (event) => {
@@ -43,12 +46,46 @@ async function updateEntity(entity, item) {
   });
 }
 
-async function getEntity(entity) {
+async function getEntity(entity, id) {
   const db = await openDatabase();
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(entity, "readonly");
     const store = transaction.objectStore(entity);
-    const request = store.get(USER_ID);
+    const request = store.get(id);
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = (event) => {
+      reject(event.target.error);
+    };
+  });
+}
+
+async function getEntities(entity) {
+  const db = await openDatabase();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(entity, "readonly");
+    const store = transaction.objectStore(entity);
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = (event) => {
+      reject(event.target.error);
+    };
+  });
+}
+
+async function clearObjectStore(entity) {
+  const db = await openDatabase();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(entity, "readwrite");
+    const store = transaction.objectStore(entity);
+    const request = store.clear();
 
     request.onsuccess = () => {
       resolve(request.result);
@@ -61,11 +98,15 @@ async function getEntity(entity) {
 }
 
 export const getUserFromDB = async () => {
-  return await getEntity("user");
+  return await getEntity("user", USER_ID);
 };
 
 export const getItemsFromDB = async () => {
-  return await getEntity("items");
+  return await getEntities("items");
+};
+
+export const getCartFromDB = async () => {
+  return await getEntities("cart");
 };
 
 export const updateUserAtDB = async (item) => {
@@ -73,5 +114,15 @@ export const updateUserAtDB = async (item) => {
 };
 
 export const updateItemsAtDB = async (items) => {
-  for (let item of items) await updateEntity("items", item);
+  clearObjectStore("items");
+  for (let item of items) {
+    await updateEntity("items", item);
+  }
+};
+
+export const updateCartAtDB = async (items) => {
+  clearObjectStore("cart");
+  for (let item of items) {
+    await updateEntity("cart", item);
+  }
 };

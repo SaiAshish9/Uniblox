@@ -9,10 +9,11 @@ import API from "utils/api";
 import { updateUserAtDB } from "utils/dbUtils";
 import { USER_ID } from "constants";
 import { updateItemsAtDB } from "utils/dbUtils";
+import { getCartFromDB } from "utils/dbUtils";
 
 const App = () => {
   const {
-    actions: { updateUser, updateItems },
+    actions: { updateUser, updateItems, updateCart },
   } = useStore();
 
   async function fetchUser() {
@@ -37,8 +38,17 @@ const App = () => {
     }
   }
 
+  async function fetchCartItems() {
+    try {
+      const data = await getCartFromDB();
+      await updateCart(data);
+    } catch (e) {
+      console.error("Error:", e);
+    }
+  }
+
   useEffect(() => {
-    Promise.all([fetchUser(), fetchItems()]);
+    Promise.all([fetchUser(), fetchItems(), fetchCartItems()]);
   }, []);
 
   return (

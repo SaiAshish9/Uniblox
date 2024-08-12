@@ -16,35 +16,45 @@ import {
 } from "./styles";
 import CloseImg from "assets/close.svg";
 import { MdArrowDropDown } from "react-icons/md";
+import { useStore } from "store";
+import { updateCartAtDB } from "utils/dbUtils";
 
-const CardContainer = ({ setQtyModalVisible, setSizeModalVisible }) => {
+const CardContainer = ({ setQtyModalVisible, setSizeModalVisible, item }) => {
+  const {
+    state: { cart },
+    actions: { updateCart },
+  } = useStore();
+
+  async function handleClose(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const cartUpdated = cart.filter((x) => x.id !== item.id);
+    await updateCart(cartUpdated);
+    await updateCartAtDB(cartUpdated);
+  }
+
   return (
     <Container>
-      <CardImg
-        alt="img"
-        src="https://assets.myntassets.com/f_webp,dpr_2.8,q_60,w_210,c_limit,fl_progressive/assets/images/8717979/2019/3/20/585db9fe-1df0-458d-b218-6f514eabb9601553068826233-Mast--Harbour-Men-Shirts-4141553068825026-1.jpg"
-      />
+      <CardImg alt="img" src={item.img} />
       <CardDesc>
-        <CardDescText>Mast & Harbour</CardDescText>
-        <CardDecSubText>
-          Men Navy Blue & Red Checked Casual Sustainable Shirt
-        </CardDecSubText>
+        <CardDescText>{item.title}</CardDescText>
+        <CardDecSubText>{item.desc}</CardDecSubText>
         <ItemPriceContainer>
-          <ItemPriceText>₹ 599</ItemPriceText>
-          <ItemPriceStrike>₹ 1,999</ItemPriceStrike>
-          <ItemProductPriceTag>64% OFF</ItemProductPriceTag>
+          <ItemPriceText>{item.price}</ItemPriceText>
+          <ItemPriceStrike>{item.strikePrice}</ItemPriceStrike>
+          <ItemProductPriceTag>{item.per}</ItemProductPriceTag>
         </ItemPriceContainer>
         <DropdownContainer>
           <Dropdown onClick={() => setSizeModalVisible(true)}>
-            Size: 38 <MdArrowDropDown />
+            Size: {item.size} <MdArrowDropDown />
           </Dropdown>
           <Dropdown onClick={() => setQtyModalVisible(true)}>
             Qty: 1 <MdArrowDropDown />
           </Dropdown>
-          <Duration>5 left</Duration>
+          <Duration>Low Stock</Duration>
         </DropdownContainer>
       </CardDesc>
-      <CloseIcon alt="img" src={CloseImg} />
+      <CloseIcon alt="img" src={CloseImg} onClick={handleClose} />
     </Container>
   );
 };
