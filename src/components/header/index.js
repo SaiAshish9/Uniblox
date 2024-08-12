@@ -97,7 +97,7 @@ const Header = () => {
         <Item onClick={handleClick}>
           <BadgeContainer>
             <BsHandbag size={22} color="#282c3f" />
-            <Badge>{cart?.length ?? 0} </Badge>
+            <Badge>{currentCart?.length ?? 0} </Badge>
           </BadgeContainer>
           <ItemText>Bag</ItemText>
         </Item>
