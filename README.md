@@ -100,6 +100,7 @@ Navigate to the Application tab using Chrome Developer Tools.
 ## Added Appropriate Comments
 
 <img width="1440" alt="Screenshot 2024-08-14 at 4 17 01 AM" src="https://github.com/user-attachments/assets/9e0a5e65-5f66-403a-90a1-4c6fe39cf78f">
+
 <img width="1440" alt="Screenshot 2024-08-14 at 4 29 41 AM" src="https://github.com/user-attachments/assets/ff492d9b-c50d-40f4-9136-45b44ed35306">
 
 ## Loom Recorded Video:
