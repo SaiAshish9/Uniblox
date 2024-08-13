@@ -103,7 +103,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
       console.log({ payload });
       await API.put("orders.json", payload, {
         headers: {
-          Authorization: "token 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",
+          Authorization: "token ",
         },
       });
       // await updateCoupons(data);
