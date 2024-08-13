@@ -12,6 +12,7 @@ import { updateItemsAtDB } from "utils/dbUtils";
 import { getCartFromDB } from "utils/dbUtils";
 import { updateCouponsAtDB } from "utils/dbUtils";
 import { setCookieIfNotExists } from "utils/cookie";
+import { getOrdersFromDB } from "utils/dbUtils";
 
 const App = () => {
   const {
@@ -64,6 +65,8 @@ const App = () => {
     try {
       const res = await API.get("coupons");
       const data = res.data;
+      const temp = await getOrdersFromDB()
+      console.log(temp)
       await updateCoupons(data);
       await updateCouponsAtDB(data);
     } catch (e) {
