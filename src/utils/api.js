@@ -2,7 +2,8 @@ import axios from "axios";
 import { API_TOKEN } from "constants/index";
 
 const API = axios.create({
-  baseURL: "http://localhost:8080/api/u/",
+  // baseURL: "http://localhost:8080",
+  baseURL: "https://uniblox.onrender.com" + "/api/u/",
   headers: {
     Authorization: `Bearer ${API_TOKEN}`,
     "Content-Type": "application/json",
