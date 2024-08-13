@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { CardList, Container } from "../cart/styles";
+import { CardList, Container, EmptyContainer } from "../cart/styles";
 import { CardContainer, PriceContainer } from "../cart/components";
 import { useStore } from "store";
 import { getOrdersFromDB } from "utils/dbUtils";
 import { OrderTitle, ParentContainer } from "./styles";
+import { TbMoodEmpty } from "react-icons/tb";
 
 const Orders = () => {
   const {
@@ -22,7 +23,7 @@ const Orders = () => {
 
   return (
     <>
-      {orders &&
+      {orders && orders.length > 0 ? (
         orders.map((order, key) => (
           <ParentContainer key={order.id}>
             <OrderTitle>
@@ -37,10 +38,20 @@ const Orders = () => {
                   <CardContainer isOrder={true} item={item} key={item.id} />
                 ))}
               </CardList>
-              <PriceContainer order={order} isOrder={true} coupon={order.coupon} />
+              <PriceContainer
+                order={order}
+                isOrder={true}
+                coupon={order.coupon}
+              />
             </Container>
           </ParentContainer>
-        ))}
+        ))
+      ) : (
+        <EmptyContainer>
+          <TbMoodEmpty size={24} color="#ff3f6c" />
+          <p>No Orders Placed Yet!</p>
+        </EmptyContainer>
+      )}
     </>
   );
 };

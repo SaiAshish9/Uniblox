@@ -18,6 +18,7 @@ import { updateCartAtDB } from "utils/dbUtils";
 import { updateOrdersAtDB } from "utils/dbUtils";
 import { getOrdersFromDB } from "utils/dbUtils";
 import { updateUserAtDB } from "utils/dbUtils";
+import { useNavigate } from "react-router-dom";
 
 const buildData = (cart, amount, discount, isOrder) => [
   {
@@ -64,6 +65,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
   const [amount, setAmount] = useState(0);
   const [totalDiscountOnMRP, setTotalDiscountOnMRP] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (cart && cart.length > 0) {
@@ -124,6 +126,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
       await updateCart(null);
       await updateCartAtDB([]);
       setTotalAmount(null);
+      navigate("/");
     } catch (e) {
       console.error("Error:", e);
     }
