@@ -59,5 +59,47 @@ export const ErrorContainer = styled.div`
 `;
 
 export const ApplyButton = styled(ModalBtn)`
-  margin-top: 1.2rem;
+  margin-top: 1.8rem;
+`;
+
+export const CouponList = styled.div`
+  margin-top: 1.8rem;
+`;
+
+export const CouponListItem = styled.div``;
+
+export const CouponCodeItem = styled.div`
+  display: flex;
+  padding: 8px 12px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-weight: 700;
+  color: #282c3f;
+  border: 1px dashed #282c3f;
+  border-radius: 3px;
+  width: fit-content;
+  cursor: pointer;
+  &:hover {
+    color: #ff3f6c;
+    border: 1px dashed #ff3f6c;
+  }
+  ${({ active }) =>
+    active === 1 &&
+    css`
+      color: #ff3f6c;
+      border: 1px dashed #ff3f6c;
+    `}
+`;
+
+export const CouponCodeText = styled.p`
+  color: #282c3f;
+  font-weight: 600;
+  font-size: 14px;
+  padding-top: 10px;
+`;
+
+export const CouponCodeDesc = styled.p`
+  color: #282c3f;
+  font-size: 12px;
+  font-weight: 300;
 `;

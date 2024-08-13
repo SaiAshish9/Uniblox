@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   CouponText,
   GreenSpanCont,
@@ -12,15 +12,22 @@ import {
   ShippingDetailsContainer,
   TotalPriceContainer,
 } from "./styles";
+import { useStore } from "store";
+import { nanoid } from "nanoid";
+import API from "utils/api";
 
-const DATA = [
+const buildData = (cart, amount, discount) => [
   {
     text1: <span>Total MRP</span>,
-    text2: <span>₹4,098</span>,
+    text2: <span>₹{cart?.length > 0 ? amount.toLocaleString() : 0}</span>,
   },
   {
     text1: <span>Discount on MRP</span>,
-    text2: <GreenSpanCont>- ₹3,000</GreenSpanCont>,
+    text2: (
+      <GreenSpanCont>
+        - ₹{cart?.length > 0 ? discount.toLocaleString() : 0}
+      </GreenSpanCont>
+    ),
   },
   {
     text1: <span>Coupon Discount</span>,
@@ -44,11 +51,74 @@ const DATA = [
 ];
 
 const PriceContainer = ({ setCouponModalVisible, coupon }) => {
+  const {
+    state: { cart, user },
+  } = useStore();
+
+  const [amount, setAmount] = useState(0);
+  const [totalDiscountOnMRP, setTotalDiscountOnMRP] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    if (cart && cart.length > 0) {
+      const tempAmount = cart.reduce(
+        (a, b) => a + +b.price.split("Rs. ")[1] * b.qty,
+        0
+      );
+      const tempDiscountOnMRP = cart.reduce(
+        (a, b) =>
+          a +
+          (+b.strikePrice.split("Rs. ")[1] - +b.price.split("Rs. ")[1]) * b.qty,
+        0
+      );
+      setAmount(tempAmount);
+      setTotalDiscountOnMRP(tempDiscountOnMRP);
+      if (coupon) {
+        setTotalAmount((tempAmount * (1 - coupon.discountPercentage / 100)).toFixed(2));
+      } else {
+        setTotalAmount(tempAmount);
+      }
+    }
+  }, [cart, coupon]);
+
+  async function handleOrder() {
+    try {
+      const existingOrders = await API.get("orders.json");
+      const jsonData = existingOrders.data;
+      let payload = [];
+      const temp = {
+        cart,
+        amount,
+        totalDiscountOnMRP,
+        coupon,
+        totalAmount,
+        orderId: nanoid(),
+        userId: user.id,
+      };
+      if (jsonData?.length > 0) {
+        payload = [...jsonData, temp];
+      } else {
+        payload = [temp];
+      }
+      console.log({ payload });
+      await API.put("orders.json", payload, {
+        headers: {
+          Authorization: "token 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",
+        },
+      });
+      // await updateCoupons(data);
+      // await updateCouponsAtDB(data);
+    } catch (e) {
+      console.error("Error:", e);
+    }
+    console.log();
+  }
+
   return (
     <PriceDesc>
-      <PriceText1>PRICE DETAILS (2 Items)</PriceText1>
+      <PriceText1>PRICE DETAILS ({cart?.length ?? 0} Items)</PriceText1>
       <OrderSummary>
-        {DATA.map((item, key) => (
+        {buildData(cart, amount, totalDiscountOnMRP).map((item, key) => (
           <OrderSummaryItem key={key}>
             {item.text1}
             <span
@@ -58,17 +128,25 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
                 }
               }}
             >
-              {coupon && item.coupon ? <CouponText>{coupon}</CouponText> : item.text2}
+              {coupon && item.coupon ? (
+                <CouponText>{coupon.id}</CouponText>
+              ) : (
+                item.text2
+              )}
             </span>
           </OrderSummaryItem>
         ))}
-        <ShippingDetailsContainer>
-          <PriceText1>SHIPPING DETAILS</PriceText1>
-          <OrderSummaryItem>
-            Sai Ashish <br /> +91 8920125544 <br /> R.K. Puram, New Delhi, India{" "}
-            <br /> 110067
-          </OrderSummaryItem>
-        </ShippingDetailsContainer>
+        {user && (
+          <ShippingDetailsContainer>
+            <PriceText1>SHIPPING DETAILS</PriceText1>
+            <OrderSummaryItem>
+              {user.name} <br /> {user.phoneNumber} <br />{" "}
+              {user.address[0].type} <br />
+              {user.address[0].locality}, {user.address[0].city},{" "}
+              {user.address[0].country} <br /> {user.address[0].pinCode}
+            </OrderSummaryItem>
+          </ShippingDetailsContainer>
+        )}
 
         <PaymentModeContainer>
           <span>Payment Mode</span>
@@ -76,10 +154,10 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
         </PaymentModeContainer>
         <TotalPriceContainer>
           <span>Total Amount</span>
-          <span>₹1,098</span>
+          <span>₹{totalAmount}</span>
         </TotalPriceContainer>
       </OrderSummary>
-      <PriceBtn>PLACE ORDER</PriceBtn>
+      <PriceBtn onClick={handleOrder}>PLACE ORDER</PriceBtn>
     </PriceDesc>
   );
 };

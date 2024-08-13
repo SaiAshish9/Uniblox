@@ -17,6 +17,9 @@ export const openDatabase = () => {
       if (!db.objectStoreNames.contains("cart")) {
         db.createObjectStore("cart", { keyPath: "id" });
       }
+      if (!db.objectStoreNames.contains("coupons")) {
+        db.createObjectStore("coupons", { keyPath: "id" });
+      }
     };
 
     request.onsuccess = (event) => {
@@ -124,5 +127,12 @@ export const updateCartAtDB = async (items) => {
   clearObjectStore("cart");
   for (let item of items) {
     await updateEntity("cart", item);
+  }
+};
+
+export const updateCouponsAtDB = async (items) => {
+  clearObjectStore("coupons");
+  for (let item of items) {
+    await updateEntity("coupons", item);
   }
 };

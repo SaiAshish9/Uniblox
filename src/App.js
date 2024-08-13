@@ -10,10 +10,11 @@ import { updateUserAtDB } from "utils/dbUtils";
 import { USER_ID } from "constants";
 import { updateItemsAtDB } from "utils/dbUtils";
 import { getCartFromDB } from "utils/dbUtils";
+import { updateCouponsAtDB } from "utils/dbUtils";
 
 const App = () => {
   const {
-    actions: { updateUser, updateItems, updateCart },
+    actions: { updateUser, updateItems, updateCart, updateCoupons },
   } = useStore();
 
   async function fetchUser() {
@@ -47,8 +48,28 @@ const App = () => {
     }
   }
 
+  async function fetchCartItems() {
+    try {
+      const data = await getCartFromDB();
+      await updateCart(data);
+    } catch (e) {
+      console.error("Error:", e);
+    }
+  }
+
+  async function fetchCoupons() {
+    try {
+      const res = await API.get("coupons.json");
+      const data = res.data;
+      await updateCoupons(data);
+      await updateCouponsAtDB(data);
+    } catch (e) {
+      console.error("Error:", e);
+    }
+  }
+
   useEffect(() => {
-    Promise.all([fetchUser(), fetchItems(), fetchCartItems()]);
+    Promise.all([fetchUser(), fetchItems(), fetchCartItems(), fetchCoupons()]);
   }, []);
 
   return (
