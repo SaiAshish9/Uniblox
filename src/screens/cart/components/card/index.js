@@ -63,7 +63,7 @@ const CardContainer = ({
               }
             }}
           >
-            Size: {item.size} <MdArrowDropDown />
+            Size: {item.size} {!isOrder && <MdArrowDropDown />}
           </Dropdown>
           <Dropdown
             isorder={+isOrder}
@@ -75,7 +75,7 @@ const CardContainer = ({
               }
             }}
           >
-            Qty: {item.qty ?? 1} <MdArrowDropDown />
+            Qty: {item.qty ?? 1} {!isOrder && <MdArrowDropDown />}
           </Dropdown>
           <Duration>Low Stock</Duration>
         </DropdownContainer>

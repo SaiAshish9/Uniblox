@@ -14,21 +14,23 @@ import {
 } from "./styles";
 import { useStore } from "store";
 import { nanoid } from "nanoid";
-import API from "utils/api";
 import { updateCartAtDB } from "utils/dbUtils";
 import { updateOrdersAtDB } from "utils/dbUtils";
 import { getOrdersFromDB } from "utils/dbUtils";
+import { updateUserAtDB } from "utils/dbUtils";
 
-const buildData = (cart, amount, discount) => [
+const buildData = (cart, amount, discount, isOrder) => [
   {
     text1: <span>Total MRP</span>,
-    text2: <span>₹{cart?.length > 0 ? amount.toLocaleString() : 0}</span>,
+    text2: (
+      <span>₹{cart?.length > 0 || isOrder ? amount?.toLocaleString() : 0}</span>
+    ),
   },
   {
     text1: <span>Discount on MRP</span>,
     text2: (
       <GreenSpanCont>
-        - ₹{cart?.length > 0 ? discount.toLocaleString() : 0}
+        - ₹{cart?.length > 0 || isOrder ? discount?.toLocaleString() : 0}
       </GreenSpanCont>
     ),
   },
@@ -53,10 +55,10 @@ const buildData = (cart, amount, discount) => [
   },
 ];
 
-const PriceContainer = ({ setCouponModalVisible, coupon, isOrder }) => {
+const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
   const {
     state: { cart, user },
-    actions: { updateCart, updateOrders },
+    actions: { updateCart, updateOrders, updateUser },
   } = useStore();
 
   const [amount, setAmount] = useState(0);
@@ -92,13 +94,14 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder }) => {
       if (cart === null || cart?.length === 0) return;
       const existingOrders = await getOrdersFromDB();
       let payload = [];
+      const orderId = nanoid();
       const temp = {
         cart,
         amount,
         totalDiscountOnMRP,
         coupon,
         totalAmount,
-        id: nanoid(),
+        id: orderId,
         userId: user.id,
       };
       if (existingOrders?.length > 0) {
@@ -108,6 +111,16 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder }) => {
       }
       await updateOrders(payload);
       await updateOrdersAtDB(payload);
+      const tempUser = Object.assign({}, user);
+      tempUser["appliedCoupons"] = [
+        ...tempUser["appliedCoupons"],
+        {
+          orderId,
+          id: coupon.id,
+        },
+      ];
+      await updateUser(tempUser);
+      await updateUserAtDB(tempUser);
       await updateCart(null);
       await updateCartAtDB([]);
       setTotalAmount(null);
@@ -116,28 +129,38 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder }) => {
     }
   }
 
+  useEffect(() => {
+    if (isOrder && order) {
+      setAmount(order.amount);
+      setTotalAmount(order.totalAmount);
+      setTotalDiscountOnMRP(order.totalDiscountOnMRP);
+    }
+  }, [isOrder, order]);
+
   return (
     <PriceDesc>
       <PriceText1>PRICE DETAILS ({cart?.length ?? 0} Items)</PriceText1>
       <OrderSummary>
-        {buildData(cart, amount, totalDiscountOnMRP).map((item, key) => (
-          <OrderSummaryItem key={key}>
-            {item.text1}
-            <span
-              onClick={() => {
-                if (item.coupon && !isOrder) {
-                  setCouponModalVisible(true);
-                }
-              }}
-            >
-              {coupon && item.coupon ? (
-                <CouponText isorder={+isOrder}>{coupon.id}</CouponText>
-              ) : (
-                item.text2
-              )}
-            </span>
-          </OrderSummaryItem>
-        ))}
+        {buildData(cart, amount, totalDiscountOnMRP, isOrder).map(
+          (item, key) => (
+            <OrderSummaryItem key={key}>
+              {item.text1}
+              <span
+                onClick={() => {
+                  if (item.coupon && !isOrder) {
+                    setCouponModalVisible(true);
+                  }
+                }}
+              >
+                {coupon && item.coupon ? (
+                  <CouponText isorder={+isOrder}>{coupon.id}</CouponText>
+                ) : (
+                  item.text2
+                )}
+              </span>
+            </OrderSummaryItem>
+          )
+        )}
         {user && (
           <ShippingDetailsContainer>
             <PriceText1>SHIPPING DETAILS</PriceText1>

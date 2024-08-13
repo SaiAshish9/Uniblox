@@ -37,7 +37,7 @@ const Orders = () => {
                   <CardContainer isOrder={true} item={item} key={item.id} />
                 ))}
               </CardList>
-              <PriceContainer isOrder={true} coupon={order.coupon} />
+              <PriceContainer order={order} isOrder={true} coupon={order.coupon} />
             </Container>
           </ParentContainer>
         ))}
