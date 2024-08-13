@@ -40,6 +40,13 @@ const CouponModal = ({
     setCouponModalVisible(false);
   }
 
+  useEffect(() => {
+    return () => {
+      setValue("");
+      setError(null);
+    };
+  }, []);
+
   function handleCheck() {
     if (!verified) {
       if (
