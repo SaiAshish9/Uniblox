@@ -1,4 +1,5 @@
 import Home from "./home";
 import Cart from "./cart";
+import Orders from "./order";
 
-export { Home, Cart };
+export { Home, Cart, Orders };

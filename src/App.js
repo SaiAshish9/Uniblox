@@ -79,6 +79,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="checkout/cart" element={<Cart />} />
+        <Route path="orders" element={<Cart />} />
       </Routes>
     </Container>
   );

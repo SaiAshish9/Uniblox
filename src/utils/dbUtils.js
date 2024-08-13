@@ -20,6 +20,9 @@ export const openDatabase = () => {
       if (!db.objectStoreNames.contains("coupons")) {
         db.createObjectStore("coupons", { keyPath: "id" });
       }
+      if (!db.objectStoreNames.contains("orders")) {
+        db.createObjectStore("orders", { keyPath: "id" });
+      }
     };
 
     request.onsuccess = (event) => {
@@ -112,6 +115,10 @@ export const getCartFromDB = async () => {
   return await getEntities("cart");
 };
 
+export const getOrdersFromDB = async () => {
+  return await getEntities("orders");
+};
+
 export const updateUserAtDB = async (item) => {
   return await updateEntity("user", item);
 };
@@ -134,5 +141,12 @@ export const updateCouponsAtDB = async (items) => {
   clearObjectStore("coupons");
   for (let item of items) {
     await updateEntity("coupons", item);
+  }
+};
+
+export const updateOrdersAtDB = async (items) => {
+  clearObjectStore("orders");
+  for (let item of items) {
+    await updateEntity("orders", item);
   }
 };

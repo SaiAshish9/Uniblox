@@ -89,7 +89,7 @@ const Header = () => {
     return (
       <ItemList>
         {NAV_ITEM.map((item, _) => (
-          <Item key={item.text}>
+          <Item onClick={() => navigate(item.link)} key={item.text}>
             {item.icon}
             <ItemText>{item.text}</ItemText>
           </Item>

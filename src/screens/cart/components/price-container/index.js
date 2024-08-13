@@ -15,6 +15,8 @@ import {
 import { useStore } from "store";
 import { nanoid } from "nanoid";
 import API from "utils/api";
+import { updateCartAtDB } from "utils/dbUtils";
+import { updateOrdersAtDB } from "utils/dbUtils";
 
 const buildData = (cart, amount, discount) => [
   {
@@ -53,6 +55,7 @@ const buildData = (cart, amount, discount) => [
 const PriceContainer = ({ setCouponModalVisible, coupon }) => {
   const {
     state: { cart, user },
+    actions: { updateCart, updateOrders },
   } = useStore();
 
   const [amount, setAmount] = useState(0);
@@ -74,7 +77,9 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
       setAmount(tempAmount);
       setTotalDiscountOnMRP(tempDiscountOnMRP);
       if (coupon) {
-        setTotalAmount((tempAmount * (1 - coupon.discountPercentage / 100)).toFixed(2));
+        setTotalAmount(
+          (tempAmount * (1 - coupon.discountPercentage / 100)).toFixed(2)
+        );
       } else {
         setTotalAmount(tempAmount);
       }
@@ -92,7 +97,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
         totalDiscountOnMRP,
         coupon,
         totalAmount,
-        orderId: nanoid(),
+        id: nanoid(),
         userId: user.id,
       };
       if (jsonData?.length > 0) {
@@ -100,14 +105,11 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
       } else {
         payload = [temp];
       }
-      console.log({ payload });
-      await API.put("orders.json", payload, {
-        headers: {
-          Authorization: "token ",
-        },
-      });
-      // await updateCoupons(data);
-      // await updateCouponsAtDB(data);
+      updateOrdersAtDB(payload);
+      updateOrdersAtDB(payload);
+      updateCart(null);
+      updateCartAtDB([]);
+      setTotalAmount(null);
     } catch (e) {
       console.error("Error:", e);
     }

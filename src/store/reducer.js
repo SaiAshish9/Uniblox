@@ -8,6 +8,7 @@ export const initialState = {
   items: null,
   cart: null,
   coupons: null,
+  orders: null,
 };
 
 export default function reducer(state, action) {
@@ -31,6 +32,11 @@ export default function reducer(state, action) {
       return {
         ...state,
         coupons: action.payload,
+      };
+    case UPDATE_ORDERS:
+      return {
+        ...state,
+        orders: action.payload,
       };
     default:
       return state;
