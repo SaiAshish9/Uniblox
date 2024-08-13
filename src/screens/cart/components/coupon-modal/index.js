@@ -140,6 +140,7 @@ const CouponModal = ({
                 onClick={() => {
                   setValue(suggestion.id);
                   setVerified(true);
+                  setError(null);
                 }}
               >
                 {suggestion.id}
