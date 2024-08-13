@@ -13,7 +13,7 @@ Frontend:
 npm install
 npm start
 
-Project can be accessible at http://localhost:3000/
+Project can be accessible at http://localhost:3000
 
 ```
 
