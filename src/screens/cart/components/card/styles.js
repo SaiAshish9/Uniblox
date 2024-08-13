@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   background: #fff;
@@ -100,13 +100,17 @@ export const Dropdown = styled.div`
   background: #f5f5f6;
   color: #282c3f;
   font-weight: 700;
-  cursor: pointer;
   margin-right: 12px;
   border-radius: 2px;
   line-height: 16px;
   font-size: 14px;
   display: flex;
   align-items: center;
+  ${({ isorder }) =>
+    isorder !== 1 &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 export const DropdownContainer = styled.div`

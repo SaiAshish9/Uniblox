@@ -10,6 +10,11 @@ export const Container = styled.div`
   min-height: 320px;
   color: #282c3f;
   min-height: 320px;
+  ${({ isorder }) =>
+    isorder === 1 &&
+    css`
+      padding-bottom: 0px;
+    `};
 `;
 
 export const CardList = styled.div`
@@ -20,6 +25,11 @@ export const CardList = styled.div`
   border-right: 1px solid #eaeaec;
   padding-top: 32px;
   height: 100%;
+  ${({ isorder }) =>
+    isorder === 1 &&
+    css`
+      padding-bottom: 1rem;
+    `};
 `;
 
 export const ModalContent = styled.div`

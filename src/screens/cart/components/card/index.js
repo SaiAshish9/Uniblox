@@ -26,6 +26,7 @@ const CardContainer = ({
   setSelectedSize,
   setSelectedId,
   setSelectedQty,
+  isOrder,
 }) => {
   const {
     state: { cart },
@@ -53,19 +54,25 @@ const CardContainer = ({
         </ItemPriceContainer>
         <DropdownContainer>
           <Dropdown
+            isorder={+isOrder}
             onClick={() => {
-              setSelectedId(item.id);
-              setSelectedSize(+item.size);
-              setSizeModalVisible(true);
+              if (!isOrder) {
+                setSelectedId(item.id);
+                setSelectedSize(+item.size);
+                setSizeModalVisible(true);
+              }
             }}
           >
             Size: {item.size} <MdArrowDropDown />
           </Dropdown>
           <Dropdown
+            isorder={+isOrder}
             onClick={() => {
-              setSelectedId(item.id);
-              setQtyModalVisible(true);
-              setSelectedQty(item.qty);
+              if (!isOrder) {
+                setSelectedId(item.id);
+                setQtyModalVisible(true);
+                setSelectedQty(item.qty);
+              }
             }}
           >
             Qty: {item.qty ?? 1} <MdArrowDropDown />
@@ -73,7 +80,7 @@ const CardContainer = ({
           <Duration>Low Stock</Duration>
         </DropdownContainer>
       </CardDesc>
-      <CloseIcon alt="img" src={CloseImg} onClick={handleClose} />
+      {!isOrder && <CloseIcon alt="img" src={CloseImg} onClick={handleClose} />}
     </Container>
   );
 };

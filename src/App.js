@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Banner } from "components";
 import { Header } from "components";
 import { Route, Routes } from "react-router-dom";
-import { Home, Cart } from "screens";
+import { Home, Cart, Orders } from "screens";
 import { Container } from "./styles";
 import { useStore } from "store";
 import API from "utils/api";
@@ -79,7 +79,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="checkout/cart" element={<Cart />} />
-        <Route path="orders" element={<Cart />} />
+        <Route path="orders" element={<Orders />} />
       </Routes>
     </Container>
   );

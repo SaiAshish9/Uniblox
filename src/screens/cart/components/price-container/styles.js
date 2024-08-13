@@ -77,7 +77,11 @@ export const GreenSpanCont = styled.span`
 
 export const CouponText = styled.p`
   color: #ff3f6c;
-  cursor: pointer;
+  ${({ isorder }) =>
+    isorder !== 1 &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 export const PriceSpan1 = styled.span`

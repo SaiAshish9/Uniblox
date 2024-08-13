@@ -17,6 +17,7 @@ import { nanoid } from "nanoid";
 import API from "utils/api";
 import { updateCartAtDB } from "utils/dbUtils";
 import { updateOrdersAtDB } from "utils/dbUtils";
+import { getOrdersFromDB } from "utils/dbUtils";
 
 const buildData = (cart, amount, discount) => [
   {
@@ -52,7 +53,7 @@ const buildData = (cart, amount, discount) => [
   },
 ];
 
-const PriceContainer = ({ setCouponModalVisible, coupon }) => {
+const PriceContainer = ({ setCouponModalVisible, coupon, isOrder }) => {
   const {
     state: { cart, user },
     actions: { updateCart, updateOrders },
@@ -88,8 +89,8 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
 
   async function handleOrder() {
     try {
-      const existingOrders = await API.get("orders.json");
-      const jsonData = existingOrders.data;
+      if (cart === null || cart?.length === 0) return;
+      const existingOrders = await getOrdersFromDB();
       let payload = [];
       const temp = {
         cart,
@@ -100,20 +101,19 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
         id: nanoid(),
         userId: user.id,
       };
-      if (jsonData?.length > 0) {
-        payload = [...jsonData, temp];
+      if (existingOrders?.length > 0) {
+        payload = [...existingOrders, temp];
       } else {
         payload = [temp];
       }
-      updateOrdersAtDB(payload);
-      updateOrdersAtDB(payload);
-      updateCart(null);
-      updateCartAtDB([]);
+      await updateOrders(payload);
+      await updateOrdersAtDB(payload);
+      await updateCart(null);
+      await updateCartAtDB([]);
       setTotalAmount(null);
     } catch (e) {
       console.error("Error:", e);
     }
-    console.log();
   }
 
   return (
@@ -125,13 +125,13 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
             {item.text1}
             <span
               onClick={() => {
-                if (item.coupon) {
+                if (item.coupon && !isOrder) {
                   setCouponModalVisible(true);
                 }
               }}
             >
               {coupon && item.coupon ? (
-                <CouponText>{coupon.id}</CouponText>
+                <CouponText isorder={+isOrder}>{coupon.id}</CouponText>
               ) : (
                 item.text2
               )}
@@ -159,7 +159,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon }) => {
           <span>₹{totalAmount}</span>
         </TotalPriceContainer>
       </OrderSummary>
-      <PriceBtn onClick={handleOrder}>PLACE ORDER</PriceBtn>
+      {!isOrder && <PriceBtn onClick={handleOrder}>PLACE ORDER</PriceBtn>}
     </PriceDesc>
   );
 };
