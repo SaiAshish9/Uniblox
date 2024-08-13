@@ -157,7 +157,9 @@ const CouponModal = ({
 
         <ApplyButton onClick={handleClick}>Apply</ApplyButton>
         <CloseIcon
-          onClick={() => setCouponModalVisible(false)}
+          onClick={() => {
+            setCouponModalVisible(false);
+          }}
           alt="img"
           src={CloseImg}
         />

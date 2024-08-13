@@ -90,6 +90,10 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
       } else {
         setTotalAmount(tempAmount);
       }
+    } else {
+      setAmount(0);
+      setTotalAmount(0);
+      setTotalDiscountOnMRP(0);
     }
   }, [cart, coupon]);
 
