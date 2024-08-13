@@ -170,7 +170,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
               >
                 {item.coupon && order?.couponID ? (
                   <CouponText isorder={+isOrder}>{order.couponID}</CouponText>
-                ) : coupon ? (
+                ) : item.coupon && coupon ? (
                   <CouponText isorder={+isOrder}>{coupon.id}</CouponText>
                 ) : (
                   item.text2
