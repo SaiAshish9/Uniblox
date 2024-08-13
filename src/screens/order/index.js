@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { CardList, Container, EmptyContainer } from "../cart/styles";
 import { CardContainer, PriceContainer } from "../cart/components";
 import { useStore } from "store";
-import { getOrdersFromDB } from "utils/dbUtils";
 import { OrderTitle, ParentContainer } from "./styles";
 import { TbMoodEmpty } from "react-icons/tb";
+import API from "utils/api";
 
 const Orders = () => {
   const {
@@ -13,8 +13,8 @@ const Orders = () => {
   } = useStore();
 
   async function getOrders() {
-    const temp = await getOrdersFromDB();
-    await updateOrders(temp);
+    const temp = await API("orders");
+    await updateOrders(temp.data);
   }
 
   useEffect(() => {

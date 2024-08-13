@@ -19,6 +19,8 @@ import { updateOrdersAtDB } from "utils/dbUtils";
 import { getOrdersFromDB } from "utils/dbUtils";
 import { updateUserAtDB } from "utils/dbUtils";
 import { useNavigate } from "react-router-dom";
+import API from "utils/api";
+import { getCouponsFromDB } from "utils/dbUtils";
 
 const buildData = (cart, amount, discount, isOrder) => [
   {
@@ -101,7 +103,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
         cart,
         amount,
         totalDiscountOnMRP,
-        coupon,
+        couponID: coupon.id,
         totalAmount,
         id: orderId,
         userId: user.id,
@@ -111,16 +113,19 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
       } else {
         payload = [temp];
       }
+      await API.post("order/place", temp);
       await updateOrders(payload);
       await updateOrdersAtDB(payload);
       const tempUser = Object.assign({}, user);
-      tempUser["appliedCoupons"] = [
-        ...tempUser["appliedCoupons"],
-        {
-          orderId,
-          id: coupon.id,
-        },
-      ];
+      if (coupon) {
+        tempUser["appliedCoupons"] = [
+          ...tempUser["appliedCoupons"],
+          {
+            orderId,
+            id: coupon.id,
+          },
+        ];
+      }
       await updateUser(tempUser);
       await updateUserAtDB(tempUser);
       await updateCart(null);
@@ -132,11 +137,15 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
     }
   }
 
+  async function handleOrderChange(orderItem) {
+    setAmount(orderItem.amount);
+    setTotalAmount(orderItem.totalAmount);
+    setTotalDiscountOnMRP(orderItem.totalDiscountOnMRP);
+  }
+
   useEffect(() => {
     if (isOrder && order) {
-      setAmount(order.amount);
-      setTotalAmount(order.totalAmount);
-      setTotalDiscountOnMRP(order.totalDiscountOnMRP);
+      handleOrderChange(order);
     }
   }, [isOrder, order]);
 
@@ -155,7 +164,9 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
                   }
                 }}
               >
-                {coupon && item.coupon ? (
+                {item.coupon && order?.couponID ? (
+                  <CouponText isorder={+isOrder}>{order.couponID}</CouponText>
+                ) : coupon ? (
                   <CouponText isorder={+isOrder}>{coupon.id}</CouponText>
                 ) : (
                   item.text2

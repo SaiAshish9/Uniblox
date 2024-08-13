@@ -48,7 +48,7 @@ const Cart = () => {
       </CardList>
       <PriceContainer
         coupon={coupon}
-        setCouponModalVisible={setCouponModalVisible}
+        setCouponModalVisible={setCouponModalVisible}        
       />
       <QtyModal
         qtyModalVisible={qtyModalVisible}

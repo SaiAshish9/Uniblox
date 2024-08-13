@@ -7,10 +7,11 @@ import { Container } from "./styles";
 import { useStore } from "store";
 import API from "utils/api";
 import { updateUserAtDB } from "utils/dbUtils";
-import { USER_ID } from "constants";
+import { USER_ID } from "constants/index";
 import { updateItemsAtDB } from "utils/dbUtils";
 import { getCartFromDB } from "utils/dbUtils";
 import { updateCouponsAtDB } from "utils/dbUtils";
+import { setCookieIfNotExists } from "utils/cookie";
 
 const App = () => {
   const {
@@ -19,8 +20,10 @@ const App = () => {
 
   async function fetchUser() {
     try {
-      const res = await API.get(`users.json?id=${USER_ID}`);
-      const data = res.data[0];
+      const res = await API.post("user", {
+        id: USER_ID,
+      });
+      const data = res.data;
       await updateUser(data);
       await updateUserAtDB(data);
     } catch (e) {
@@ -30,7 +33,7 @@ const App = () => {
 
   async function fetchItems() {
     try {
-      const res = await API.get("items.json");
+      const res = await API.get("products");
       const data = res.data;
       await updateItems(data);
       await updateItemsAtDB(data);
@@ -59,7 +62,7 @@ const App = () => {
 
   async function fetchCoupons() {
     try {
-      const res = await API.get("coupons.json");
+      const res = await API.get("coupons");
       const data = res.data;
       await updateCoupons(data);
       await updateCouponsAtDB(data);
@@ -69,6 +72,7 @@ const App = () => {
   }
 
   useEffect(() => {
+    setCookieIfNotExists();
     Promise.all([fetchUser(), fetchItems(), fetchCartItems(), fetchCoupons()]);
   }, []);
 

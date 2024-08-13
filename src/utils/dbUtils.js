@@ -119,6 +119,10 @@ export const getOrdersFromDB = async () => {
   return await getEntities("orders");
 };
 
+export const getCouponsFromDB = async () => {
+  return await getEntities("coupons");
+};
+
 export const updateUserAtDB = async (item) => {
   return await updateEntity("user", item);
 };

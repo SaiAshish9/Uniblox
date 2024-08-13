@@ -1,10 +1,18 @@
 import axios from "axios";
+import { API_TOKEN } from "constants/index";
 
 const API = axios.create({
-  baseURL: "https://raw.githubusercontent.com/SaiAshish9/Uniblox_Assets/main/",
+  baseURL: "http://localhost:8080/api/u/",
   headers: {
+    Authorization: `Bearer ${API_TOKEN}`,
     "Content-Type": "application/json",
   },
+});
+
+Object.defineProperty(API.defaults.headers.common, "Authorization", {
+  value: `Bearer ${API_TOKEN}`,
+  writable: false,
+  configurable: false,
 });
 
 API.interceptors.response.use(
