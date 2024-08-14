@@ -107,7 +107,7 @@ const PriceContainer = ({ setCouponModalVisible, coupon, isOrder, order }) => {
         cart,
         amount,
         totalDiscountOnMRP,
-        couponID: coupon.id,
+        couponID: coupon ? coupon.id : null,
         totalAmount,
         id: orderId,
         userId: user.id,

@@ -66,7 +66,6 @@ const App = () => {
       const res = await API.get("coupons");
       const data = res.data;
       const temp = await getOrdersFromDB()
-      console.log(temp)
       await updateCoupons(data);
       await updateCouponsAtDB(data);
     } catch (e) {

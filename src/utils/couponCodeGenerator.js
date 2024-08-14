@@ -18,5 +18,3 @@ function generateCoupons(numberOfCoupons, codeLength) {
 }
 
 const coupons = generateCoupons(100, 10);
-
-console.log(coupons);
