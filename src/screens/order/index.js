@@ -14,7 +14,7 @@ const Orders = () => {
 
   async function getOrders() {
     const temp = await API("orders");
-    await updateOrders(temp.data.slice(-1));
+    await updateOrders(temp.data.reverse());
   }
 
   useEffect(() => {
